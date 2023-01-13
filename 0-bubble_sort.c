@@ -1,41 +1,46 @@
 #include "sort.h"
+
 /**
- * bubble_sort - comparison sort algorithm for adjacent
- * integer numbers in @array of @size swapping and
- * putting largest integer number at the top of the list
- * @array : array of elements
- * @size : size of the array
- *
- * Return: Nothing
+ * swap2 - swaps two numbers
+ * @a : integer 1
+ * @b : integer b
  */
+
+void swap2(int *a, int *b)
+{
+	int temp;
+
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+/**
+ * bubble_sort - sorts an array of integers in
+ * ascending order using the Bubble sort algorithm
+ * @array : array of ints to sort
+ * @size : size of array
+ */
+
 void bubble_sort(int *array, size_t size)
 {
-	size_t index = 0, count = size - 1;
-	ssize_t temp = 0;
-	char *best_case = "n", *average_case = "n^2", *worst_case = "n^2";
-	FILE *fp = fopen("0-O", "w");
+	unsigned int i = 1, j, temp = size;
 
-	if (fp == NULL || array == NULL)
+	if (!array || size < 2)
+		return;
+
+	while (temp > 1)
 	{
-		exit(EXIT_FAILURE);
-	}
-	if (size > 1)
-	{
-		while (count--)
+		i = 0;
+		for (j = 1; j <= temp - 1; j++)
 		{
-			for (index = 0; index < size; index++)
+			if (array[j - 1] > array[j])
 			{
-				if (array[index] < array[index - 1])
-				{
-					temp = array[index];
-					array[index] = array[index - 1];
-					array[index - 1] = temp;
-					print_array(array, size);
-				}
+				swap2(array + j - 1, array + j);
+				print_array(array, size);
+				i = j;
 			}
 		}
+		temp = i;
 	}
-	fprintf(fp, "O(%s)\nO(%s)\nO(%s)\n", best_case, average_case,
-		worst_case);
-	fclose(fp);
 }

@@ -1,50 +1,49 @@
 #include "sort.h"
 /**
- * insertion_sort_list - in-place sorting algorithm for moving
- * smaller integer numbers in @list in correct positions
- * in the sorted list, while shifting larger numbers to make space
- * @list : doubly linked list of elements
- *
- * Return: Nothing
+ * swap2n - swaps two nodes
+ * @h: pointer to head
+ * @a: node to swap
+ * @b: node to swap
  */
+
+void swap2n(listint_t **h, listint_t **a, listint_t *b)
+{
+	(*a)->next = b->next;
+	if (b->next != NULL)
+		b->next->prev = *a;
+	b->prev = (*a)->prev;
+	b->next = *a;
+	if ((*a)->prev != NULL)
+		(*a)->prev->next = b;
+	else
+		*h = b;
+	(*a)->prev = b;
+	*a = b->prev;
+}
+
+/**
+ * insertion_sort_list -  sorts a doubly linked list using the Insertion
+ * sort algorithm
+ * @list : pointer to list
+ */
+
+
+
+
 void insertion_sort_list(listint_t **list)
 {
-	char *best_case = "n", *average_case = "n^2", *worst_case = "n^2";
-	listint_t **head = (listint_t **)list;
-	listint_t *temp = NULL;
-	listint_t *curr = (listint_t *)(*head)->next;
-	FILE *fp = fopen("1-O", "w");
+	listint_t *a, *b, *temp;
 
-	if (fp == NULL || list == NULL || *head == NULL)
-		exit(EXIT_FAILURE);
-	while (curr != NULL)
+	if (*list == NULL || (*list)->next == NULL || list == NULL)
+		return;
+	for (b = (*list)->next; b != NULL; b = temp)
 	{
-		temp = curr->prev;
-		while (temp != NULL)
+		temp = b->next;
+		a = b->prev;
+		while (a != NULL && b->n < a->n)
 		{
-			if (curr->n < temp->n)
-			{
-				if (temp->prev != NULL)
-					temp->prev->next = curr;
-				curr->prev = temp->prev;
-				if (curr->next != NULL)
-					curr->next->prev = temp;
-				temp->next = curr->next;
-				temp->prev = curr;
-				curr->next = temp;
-				if (curr->prev == NULL)
-					*head = curr;
-				print_list(*head);
-			}
-			else
-				break;
-			temp = curr->prev;
+			swap2n(list, &a, b);
+			print_list((const listint_t *)*list);
 		}
-		curr = curr->next;
 	}
-	fprintf(fp, "O(%s)\nO(%s)\nO(%s)\n", best_case, average_case,
-		worst_case);
-	free(temp);
-	free(curr);
-	fclose(fp);
 }

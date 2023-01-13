@@ -1,44 +1,44 @@
 #include "sort.h"
 /**
- * selection_sort - in-place comparison sorting algorithm for swapping
- * smaller integer numbers in @array of @size in correct positions by
- * managing a sorted sublist on the left and an unsorted sublist on the right
- * @array : array of elements
- * @size : size of the array
- *
- * Return: Nothing
+ * swap2 - swaps two numbers
+ * @a : integer 1
+ * @b : integer b
  */
+
+void swap2(int *a, int *b)
+{
+	int temp;
+
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+/**
+ * selection_sort - sorts an array of integers in ascending order using
+ * the Selection sort algorithm
+ * @array : pointer to array of ints
+ * @size : size of array
+ */
+
 void selection_sort(int *array, size_t size)
 {
-	size_t index = 0, min = 0, pos = 0;
-	ssize_t temp = 0;
-	char *best_case = "n^2", *average_case = "n^2", *worst_case = "n^2";
-	FILE *fp = fopen("2-O", "w");
+	int i, j, min, temp = size;
 
-	if (fp == NULL || array == NULL)
+	if (!array || size < 2)
+		return;
+	for (i = 0; i < temp - 1; i++)
 	{
-		exit(EXIT_FAILURE);
-	}
-	if (size > 1)
-	{
-		for (index = 0; index < size; index++)
+		min = i;
+		for (j = i + 1; j < temp; j++)
 		{
-			min = index;
-			for (pos = index + 1; pos < size; pos++)
-			{
-				if (array[pos] < array[min])
-					min = pos;
-			}
-			if (array[min] < array[index])
-			{
-				temp = array[index];
-				array[index] = array[min];
-				array[min] = temp;
-				print_array(array, size);
-			}
+			if (array[j] < array[min])
+				min = j;
+		}
+		if (min != i)
+		{
+			swap2(array + i, array + min);
+			print_array(array, size);
 		}
 	}
-	fprintf(fp, "O(%s)\nO(%s)\nO(%s)\n", best_case, average_case,
-		worst_case);
-	fclose(fp);
 }
